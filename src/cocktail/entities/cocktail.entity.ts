@@ -4,6 +4,6 @@ export class Cocktail {
     id: number;
     name: string;
     category: string;
-    instruction: string,
-    ingredients: Ingredient[]
+    instruction: string;
+    ingredients: Ingredient[];
 }
