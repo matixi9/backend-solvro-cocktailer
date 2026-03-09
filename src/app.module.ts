@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CocktailModule } from './cocktail/cocktail.module';
 import { IngredientModule } from './ingredient/ingredient.module';
+import { CocktailIngredientModule } from './cocktail-ingredient/cocktail-ingredient.module';
 
 @Module({
-  imports: [CocktailModule, IngredientModule],
+  imports: [CocktailModule, IngredientModule, CocktailIngredientModule],
   controllers: [AppController],
   providers: [AppService],
 })
