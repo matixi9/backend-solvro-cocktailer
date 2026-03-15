@@ -1,98 +1,103 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🍹 Solvro Cocktailer API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+[![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io/)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Kompleksowe backendowe REST API do zarządzania koktajlami i ich składnikami, zrealizowane jako zadanie rekrutacyjne do koła naukowego Solvro. 
 
-## Description
+Aplikacja pozwala na pełne zarządzanie bazą drinków z uwzględnieniem dokładnych proporcji składników (wymodelowanych za pomocą kaskadowych relacji w bazie danych) oraz dostarcza paginowane endpointy z walidacją wejściową.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+---
 
-## Project setup
+## 🛠️ Architektura i Technologie
 
+Projekt został oparty na nowoczesnym stosie technologicznym dla środowiska Node.js:
+- **Framework:** NestJS (TypeScript)
+- **Baza danych:** PostgreSQL
+- **ORM:** TypeORM
+- **Walidacja Danych:** `class-validator` oraz `class-transformer` (globalny `ValidationPipe`)
+- **Dokumentacja API:** Swagger (OpenAPI)
+- **Konteneryzacja:** Docker
+
+---
+
+## 🗄️ Model Danych (Domena)
+
+Aplikacja opiera się na trzech głównych encjach w relacyjnej bazie danych:
+
+1. **Ingredient (Składnik)** - przechowuje podstawowe informacje o dostępnych składnikach (m.in. nazwę, opis, status bycia alkoholem, zdjęcie).
+2. **Cocktail (Koktajl)** - główna encja drinka, zawierająca nazwę, kategorię oraz dokładną instrukcję przygotowania.
+3. **CocktailIngredient (Tabela Złączeniowa / Proporcje)** - encja realizująca relację *Many-to-Many* z dodatkową kolumną `amount`. Pozwala na przypisanie konkretnej ilości danego składnika do konkretnego koktajlu (np. "50ml wódki" lub "2 plasterki cytryny").
+
+---
+
+## 🚀 Uruchomienie projektu lokalnie
+
+### 1. Wymagania wstępne
+Aby uruchomić projekt na swoim komputerze, upewnij się, że posiadasz zainstalowane:
+- **Node.js** (w wersji 18+ lub nowszej)
+- **NPM** lub **Yarn**
+- **Docker Desktop** (do bezproblemowego uruchomienia bazy danych)
+
+### 2. Instalacja zależności
+Sklonuj repozytorium na swój dysk, otwórz terminal w głównym folderze projektu i wykonaj polecenie:
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
-
+### 3. Konfiguracja Bazy Danych (Docker)
+Aplikacja wymaga bazy danych PostgreSQL. Najszybszym sposobem na jej uruchomienie jest skorzystanie z Dockera. Poniższa komenda pobierze obraz, utworzy użytkownika, hasło oraz docelową bazę `cocktailer_db`, na którą nasłuchuje aplikacja na porcie `5432`:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker run --name cocktailer-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=haslo -e POSTGRES_DB=cocktailer_db -p 5432:5432 -d postgres
 ```
 
-## Run tests
-
+### 4. Uruchomienie Serwera API
+Gdy baza danych jest aktywna, uruchom serwer NestJS w trybie deweloperskim (z automatycznym przeładowywaniem zmian):
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
+*Uwaga: Dzięki ustawieniu `synchronize: true` w konfiguracji TypeORM, aplikacja przy pierwszym uruchomieniu automatycznie utworzy wszystkie niezbędne tabele w bazie danych.*
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 📖 Dokumentacja API (Swagger)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Aplikacja posiada wbudowaną, interaktywną dokumentację Swagger, która umożliwia testowanie wszystkich endpointów (GET, POST, PATCH, DELETE) bezpośrednio z poziomu przeglądarki, bez konieczności używania narzędzi takich jak Postman.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+Po uruchomieniu serwera, dokumentacja jest dostępna pod adresem:  
+👉 **http://localhost:3000/api**
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 📋 Lista wymagań i postęp prac (Task List)
 
-Check out a few resources that may come in handy when working with NestJS:
+Zadanie rekrutacyjne zostało podzielone na cele podstawowe oraz dodatkowe ("Nice to have"). Poniżej znajduje się aktualny status realizacji:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### 🎯 Wymagania podstawowe i Główne funkcjonalności
+- [x] Stworzenie projektu REST API w NestJS (TypeScript).
+- [x] Konfiguracja relacyjnej bazy danych (PostgreSQL + TypeORM).
+- [x] Wymodelowanie encji Składnika (`Ingredient` - id, nazwa, opis, czy jest alkoholowy, zdjęcie).
+- [x] Wymodelowanie encji Koktajlu (`Cocktail` - id, nazwa, kategoria, instrukcja).
+- [x] Prawidłowe wymodelowanie relacji i proporcji (encja złączeniowa `CocktailIngredient` i kaskadowy zapis).
+- [x] Implementacja pełnego CRUDa dla koktajli i składników.
+- [x] Staranne zastosowanie zasad REST (odpowiednie endpointy i struktury DTO).
+- [x] Globalna walidacja wejścia za pomocą globalnego `ValidationPipe` (odrzucanie błędnych payloadów).
+- [x] Implementacja globalnej paginacji wyników (parametry `page` oraz `limit` łapane z URL).
+- [x] Zwracanie powiązanych danych w GET (pobieranie wszystkich składników i ich proporcji zagnieżdżonych w obiekcie koktajlu).
 
-## Support
+### 🌟 Nice to have (Dodatkowe funkcjonalności)
+- [x] Wygenerowana automatyczna dokumentacja API (Swagger / OpenAPI).
+- [ ] Wsparcie dla złożonego filtrowania i sortowania (np. szukanie bezalkoholowych koktajli zawierających miętę, sortowanie po nazwie).
+- [ ] Autoryzacja i użytkownicy (Logowanie oraz Rejestracja z użyciem JWT).
+- [ ] Różne role użytkowników (podział na Role: User oraz Admin).
+- [ ] Powiązanie koktajlu z jego autorem (relacja User -> Cocktail).
+- [ ] Uprawnienia: edycja/usuwanie koktajlu dozwolona tylko dla osoby, która go dodała, lub dla Admina.
+- [ ] Oceny i recenzje: każdy widzi koktajle, ale tylko zalogowany może zostawić recenzję.
+- [ ] Testy automatyczne (jednostkowe, integracyjne lub e2e).
+- [ ] Wygenerowany i załączony schemat (screen) diagramu ERD bazy danych.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+---
+**Autor projektu:** [Tutaj wpisz swoje imię/nick]  
+**Licencja:** MIT
