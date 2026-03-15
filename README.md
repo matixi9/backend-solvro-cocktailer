@@ -5,99 +5,99 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io/)
 
-Kompleksowe backendowe REST API do zarządzania koktajlami i ich składnikami, zrealizowane jako zadanie rekrutacyjne do koła naukowego Solvro. 
+A comprehensive backend REST API for managing cocktails and their ingredients, developed as a recruitment task for the Solvro science club. 
 
-Aplikacja pozwala na pełne zarządzanie bazą drinków z uwzględnieniem dokładnych proporcji składników (wymodelowanych za pomocą kaskadowych relacji w bazie danych) oraz dostarcza paginowane endpointy z walidacją wejściową.
+The application allows for full management of a drinks database, taking into account exact ingredient proportions (modeled using cascading relationships in the database), and provides paginated endpoints with strict input validation.
 
 ---
 
-## 🛠️ Architektura i Technologie
+## 🛠️ Architecture and Technologies
 
-Projekt został oparty na nowoczesnym stosie technologicznym dla środowiska Node.js:
+The project is built on a modern tech stack for the Node.js environment:
 - **Framework:** NestJS (TypeScript)
-- **Baza danych:** PostgreSQL
+- **Database:** PostgreSQL
 - **ORM:** TypeORM
-- **Walidacja Danych:** `class-validator` oraz `class-transformer` (globalny `ValidationPipe`)
-- **Dokumentacja API:** Swagger (OpenAPI)
-- **Konteneryzacja:** Docker
+- **Data Validation:** `class-validator` and `class-transformer` (global `ValidationPipe`)
+- **API Documentation:** Swagger (OpenAPI)
+- **Containerization:** Docker
 
 ---
 
-## 🗄️ Model Danych (Domena)
+## 🗄️ Data Model (Domain)
 
-Aplikacja opiera się na trzech głównych encjach w relacyjnej bazie danych:
+The application is based on three main entities in a relational database:
 
-1. **Ingredient (Składnik)** - przechowuje podstawowe informacje o dostępnych składnikach (m.in. nazwę, opis, status bycia alkoholem, zdjęcie).
-2. **Cocktail (Koktajl)** - główna encja drinka, zawierająca nazwę, kategorię oraz dokładną instrukcję przygotowania.
-3. **CocktailIngredient (Tabela Złączeniowa / Proporcje)** - encja realizująca relację *Many-to-Many* z dodatkową kolumną `amount`. Pozwala na przypisanie konkretnej ilości danego składnika do konkretnego koktajlu (np. "50ml wódki" lub "2 plasterki cytryny").
+1. **Ingredient** - stores basic information about available ingredients (e.g., name, description, alcoholic status, photo).
+2. **Cocktail** - the main drink entity, containing the name, category, and exact preparation instructions.
+3. **CocktailIngredient (Pivot Table / Proportions)** - an entity implementing a *Many-to-Many* relationship with an additional `amount` column. It allows assigning a specific quantity of an ingredient to a specific cocktail (e.g., "50ml of vodka" or "2 slices of lemon").
 
 ---
 
-## 🚀 Uruchomienie projektu lokalnie
+## 🚀 Running the project locally
 
-### 1. Wymagania wstępne
-Aby uruchomić projekt na swoim komputerze, upewnij się, że posiadasz zainstalowane:
-- **Node.js** (w wersji 18+ lub nowszej)
-- **NPM** lub **Yarn**
-- **Docker Desktop** (do bezproblemowego uruchomienia bazy danych)
+### 1. Prerequisites
+To run the project on your machine, make sure you have installed:
+- **Node.js** (v18+ or newer)
+- **NPM** or **Yarn**
+- **Docker Desktop** (for a seamless database setup)
 
-### 2. Instalacja zależności
-Sklonuj repozytorium na swój dysk, otwórz terminal w głównym folderze projektu i wykonaj polecenie:
+### 2. Installation
+Clone the repository to your local drive, open the terminal in the main project folder, and run:
 ```bash
 npm install
 ```
 
-### 3. Konfiguracja Bazy Danych (Docker)
-Aplikacja wymaga bazy danych PostgreSQL. Najszybszym sposobem na jej uruchomienie jest skorzystanie z Dockera. Poniższa komenda pobierze obraz, utworzy użytkownika, hasło oraz docelową bazę `cocktailer_db`, na którą nasłuchuje aplikacja na porcie `5432`:
+### 3. Database Configuration (Docker)
+The application requires a PostgreSQL database. The fastest way to start it is by using Docker. The following command will download the image, create a user, password, and the target `cocktailer_db` database, which the application listens to on port `5432`:
 ```bash
 docker run --name cocktailer-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=haslo -e POSTGRES_DB=cocktailer_db -p 5432:5432 -d postgres
 ```
 
-### 4. Uruchomienie Serwera API
-Gdy baza danych jest aktywna, uruchom serwer NestJS w trybie deweloperskim (z automatycznym przeładowywaniem zmian):
+### 4. Running the API Server
+Once the database is up and running, start the NestJS server in development mode (with hot-reload):
 ```bash
 npm run start:dev
 ```
-*Uwaga: Dzięki ustawieniu `synchronize: true` w konfiguracji TypeORM, aplikacja przy pierwszym uruchomieniu automatycznie utworzy wszystkie niezbędne tabele w bazie danych.*
+*Note: Thanks to the `synchronize: true` setting in the TypeORM configuration, the application will automatically create all necessary tables in the database upon the first startup.*
 
 ---
 
-## 📖 Dokumentacja API (Swagger)
+## 📖 API Documentation (Swagger)
 
-Aplikacja posiada wbudowaną, interaktywną dokumentację Swagger, która umożliwia testowanie wszystkich endpointów (GET, POST, PATCH, DELETE) bezpośrednio z poziomu przeglądarki, bez konieczności używania narzędzi takich jak Postman.
+The application features built-in, interactive Swagger documentation, allowing you to test all endpoints (GET, POST, PATCH, DELETE) directly from your browser, without the need for tools like Postman.
 
-Po uruchomieniu serwera, dokumentacja jest dostępna pod adresem:  
+Once the server is running, the documentation is available at:  
 👉 **http://localhost:3000/api**
 
 ---
 
-## 📋 Lista wymagań i postęp prac (Task List)
+## 📋 Task List and Progress
 
-Zadanie rekrutacyjne zostało podzielone na cele podstawowe oraz dodatkowe ("Nice to have"). Poniżej znajduje się aktualny status realizacji:
+The recruitment task was divided into core requirements and additional ("Nice to have") features. Below is the current implementation status:
 
-### 🎯 Wymagania podstawowe i Główne funkcjonalności
-- [x] Stworzenie projektu REST API w NestJS (TypeScript).
-- [x] Konfiguracja relacyjnej bazy danych (PostgreSQL + TypeORM).
-- [x] Wymodelowanie encji Składnika (`Ingredient` - id, nazwa, opis, czy jest alkoholowy, zdjęcie).
-- [x] Wymodelowanie encji Koktajlu (`Cocktail` - id, nazwa, kategoria, instrukcja).
-- [x] Prawidłowe wymodelowanie relacji i proporcji (encja złączeniowa `CocktailIngredient` i kaskadowy zapis).
-- [x] Implementacja pełnego CRUDa dla koktajli i składników.
-- [x] Staranne zastosowanie zasad REST (odpowiednie endpointy i struktury DTO).
-- [x] Globalna walidacja wejścia za pomocą globalnego `ValidationPipe` (odrzucanie błędnych payloadów).
-- [x] Implementacja globalnej paginacji wyników (parametry `page` oraz `limit` łapane z URL).
-- [x] Zwracanie powiązanych danych w GET (pobieranie wszystkich składników i ich proporcji zagnieżdżonych w obiekcie koktajlu).
+### 🎯 Core Requirements and Features
+- [x] Create a REST API project in NestJS (TypeScript).
+- [x] Configure a relational database (PostgreSQL + TypeORM).
+- [x] Model the `Ingredient` entity (id, name, description, isAlcoholic, photo).
+- [x] Model the `Cocktail` entity (id, name, category, instruction).
+- [x] Properly model relationships and proportions (`CocktailIngredient` pivot entity with cascade saving).
+- [x] Implement full CRUD functionality for cocktails and ingredients.
+- [x] Carefully apply REST principles (proper endpoints and DTO structures).
+- [x] Global input validation using a global `ValidationPipe` (rejecting invalid payloads).
+- [x] Implement global result pagination (`page` and `limit` query parameters).
+- [x] Return relational data in GET requests (fetching all ingredients and their proportions nested within the cocktail object).
 
-### 🌟 Nice to have (Dodatkowe funkcjonalności)
-- [x] Wygenerowana automatyczna dokumentacja API (Swagger / OpenAPI).
-- [ ] Wsparcie dla złożonego filtrowania i sortowania (np. szukanie bezalkoholowych koktajli zawierających miętę, sortowanie po nazwie).
-- [ ] Autoryzacja i użytkownicy (Logowanie oraz Rejestracja z użyciem JWT).
-- [ ] Różne role użytkowników (podział na Role: User oraz Admin).
-- [ ] Powiązanie koktajlu z jego autorem (relacja User -> Cocktail).
-- [ ] Uprawnienia: edycja/usuwanie koktajlu dozwolona tylko dla osoby, która go dodała, lub dla Admina.
-- [ ] Oceny i recenzje: każdy widzi koktajle, ale tylko zalogowany może zostawić recenzję.
-- [ ] Testy automatyczne (jednostkowe, integracyjne lub e2e).
-- [ ] Wygenerowany i załączony schemat (screen) diagramu ERD bazy danych.
+### 🌟 Nice to have (Additional Features)
+- [x] Generate automated API documentation (Swagger / OpenAPI).
+- [ ] Support for complex filtering and sorting (e.g., searching for non-alcoholic cocktails, sorting by name).
+- [ ] Authorization and users (Login and Registration using JWT).
+- [ ] Different user roles (Role breakdown: User and Admin).
+- [ ] Link cocktail to its author (User -> Cocktail relationship).
+- [ ] Permissions: editing/deleting a cocktail allowed only for the creator or an Admin.
+- [ ] Ratings and reviews: everyone can view cocktails, but only logged-in users can leave a review.
+- [ ] Automated tests (unit, integration, or e2e).
+- [ ] Generate and attach an ERD database schema (screenshot).
 
 ---
-**Autor projektu:** Mateusz Reszel  
-**Licencja:** MIT
+**Author:**  Mateusz Reszel  
+**License:** MIT
