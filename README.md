@@ -99,5 +99,5 @@ Zadanie rekrutacyjne zostało podzielone na cele podstawowe oraz dodatkowe ("Nic
 - [ ] Wygenerowany i załączony schemat (screen) diagramu ERD bazy danych.
 
 ---
-**Autor projektu:** [Tutaj wpisz swoje imię/nick]  
+**Autor projektu:** Mateusz Reszel  
 **Licencja:** MIT
