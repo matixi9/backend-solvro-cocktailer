@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { CocktailIngredientService } from './cocktail-ingredient.service';
 import { CreateCocktailIngredientDto } from './dto/create-cocktail-ingredient.dto';
 import { UpdateCocktailIngredientDto } from './dto/update-cocktail-ingredient.dto';
@@ -13,8 +13,11 @@ export class CocktailIngredientController {
   }
 
   @Get()
-  findAll() {
-    return this.cocktailIngredientService.findAll();
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10
+  ) {
+    return this.cocktailIngredientService.findAll(page, limit);
   }
 
   @Get(':id')

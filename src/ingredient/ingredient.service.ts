@@ -18,8 +18,20 @@ export class IngredientService {
     return await this.ingredientRepository.save(newIngredient);
   }
 
-  async findAll(): Promise<Ingredient[]> {
-    return await this.ingredientRepository.find();
+  async findAll(page: number, limit: number): Promise<any> {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.ingredientRepository.findAndCount({
+      skip: skip,
+      take: limit,
+    });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    };
   }
 
   async findOne(id: number): Promise<Ingredient> {

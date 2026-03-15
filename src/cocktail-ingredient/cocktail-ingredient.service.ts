@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCocktailIngredientDto } from './dto/create-cocktail-ingredient.dto';
 import { UpdateCocktailIngredientDto } from './dto/update-cocktail-ingredient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,19 +18,39 @@ constructor(
     return await this.cocktailIngredientRepository.save(newCocktailIngredient);
   }
 
-  async findAll(): Promise<CocktailIngredient[]> {
-    return `This action returns all cocktailIngredient`;
+  async findAll(page: number, limit: number): Promise<any> {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.cocktailIngredientRepository.findAndCount({
+      skip: skip,
+      take: limit,
+      relations: ['cocktail', 'ingredient'],
+    });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    };
   }
 
   async findOne(id: number): Promise<CocktailIngredient> {
-    return `This action returns a #${id} cocktailIngredient`;
+    const cocktailIngredient = await this.cocktailIngredientRepository.findOneBy({id});
+    if (!cocktailIngredient) {
+      throw new NotFoundException ("Nie znaleziono danego składnika");
+    }
+    return cocktailIngredient
   }
 
-  async update(id: number, updateCocktailIngredientDto: UpdateCocktailIngredientDto): Promise<CocktailIngredient> {
-    return `This action updates a #${id} cocktailIngredient`;
+  async update(id: number, UpdateCocktailIngredientDto: UpdateCocktailIngredientDto): Promise<CocktailIngredient> {
+    const cocktailIngredient = await this.findOne(id);
+    const updatedCocktailIngredient = this.cocktailIngredientRepository.merge(cocktailIngredient, UpdateCocktailIngredientDto);
+    return await this.cocktailIngredientRepository.save(updatedCocktailIngredient);
   }
 
-  async remove(id: number): Promise<CocktailIngredient> {
-    return `This action removes a #${id} cocktailIngredient`;
+  async remove(id: number): Promise<void> {
+    const cocktailIngredient = await this.findOne(id);
+    await this.cocktailIngredientRepository.remove(cocktailIngredient);
   }
 }

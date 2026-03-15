@@ -18,12 +18,28 @@ export class CocktailService {
     return await this.cocktailRepository.save(newCocktail);
   }
 
-  async findAll(): Promise<Cocktail[]> {
-    return await this.cocktailRepository.find();
+  async findAll(page: number, limit: number): Promise<any> {
+    const skip = (page - 1) * limit;
+    const [data, total] = await this.cocktailRepository.findAndCount({
+      skip: skip,
+      take: limit,
+      relations: ['ingredients', 'ingredients.ingredient']
+    })
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    };
   }
 
   async findOne(id: number): Promise<Cocktail> {
-    const cocktail = await this.cocktailRepository.findOneBy({id});
+    const cocktail = await this.cocktailRepository.findOne({
+      where: {id},
+      relations: ['ingredients', 'ingredients.ingredient']
+    });
     if (!cocktail) {
       throw new NotFoundException('Nie znaleziono koktajlu :c');
     }
