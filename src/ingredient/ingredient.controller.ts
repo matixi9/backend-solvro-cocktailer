@@ -15,9 +15,11 @@ export class IngredientController {
   @Get()
   findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10
+    @Query('limit') limit: number = 10,
+    @Query('search') search?: string,
+    @Query('isAlcoholic') isAlcoholic?: string
   ) {
-    return this.ingredientService.findAll(page, limit);
+    return this.ingredientService.findAll(page, limit, search, isAlcoholic);
   }
 
   @Get(':id')

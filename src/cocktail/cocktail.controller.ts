@@ -15,9 +15,11 @@ export class CocktailController {
   @Get()
   findAll(
     @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10
+    @Query('limit') limit: number = 10,
+    @Query('search') search?: string,
+    @Query('category') category?: string
   ) {
-    return this.cocktailService.findAll(page, limit);
+    return this.cocktailService.findAll(page, limit, search, category);
   }
 
   @Get(':id')

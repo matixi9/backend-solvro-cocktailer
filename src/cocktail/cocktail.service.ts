@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Search } from '@nestjs/common';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cocktail } from './entities/cocktail.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class CocktailService {
@@ -18,12 +18,24 @@ export class CocktailService {
     return await this.cocktailRepository.save(newCocktail);
   }
 
-  async findAll(page: number, limit: number): Promise<any> {
+  async findAll(page: number, limit: number, search?: string, category?: string): Promise<any> {
     const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (search) {
+      where.name = ILike(`%${search}%`);
+    }
+
+    if (category) {
+      where.category = ILike(`%${category}%`);
+    }
+
     const [data, total] = await this.cocktailRepository.findAndCount({
+      where: where,
       skip: skip,
       take: limit,
-      relations: ['ingredients', 'ingredients.ingredient']
+      relations: ['ingredients', 'ingredients.ingredient'],
+      order: {name: 'ASC'}
     })
 
     return {

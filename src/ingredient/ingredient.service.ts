@@ -3,7 +3,7 @@ import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ingredient } from './entities/ingredient.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class IngredientService {
@@ -18,11 +18,23 @@ export class IngredientService {
     return await this.ingredientRepository.save(newIngredient);
   }
 
-  async findAll(page: number, limit: number): Promise<any> {
+  async findAll(page: number, limit: number, search?: string, isAlcoholic?: string): Promise<any> {
     const skip = (page - 1) * limit;
+
+    const where: any = {};
+    if (search) {
+      where.name = ILike(`%${search}%`);
+    }
+
+    if (isAlcoholic !== undefined) {
+      where.isAlcoholic = isAlcoholic === 'true';
+    }
+
     const [data, total] = await this.ingredientRepository.findAndCount({
+      where: where,
       skip: skip,
       take: limit,
+      order: {name: 'ASC'}
     });
 
     return {
