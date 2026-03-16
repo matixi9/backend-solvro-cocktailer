@@ -8,6 +8,8 @@ import { CocktailIngredientModule } from './cocktail-ingredient/cocktail-ingredi
 import { Cocktail } from './cocktail/entities/cocktail.entity';
 import { Ingredient } from './ingredient/entities/ingredient.entity';
 import { CocktailIngredient } from './cocktail-ingredient/entities/cocktail-ingredient.entity';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
 
 @Module({
   imports: [
@@ -18,12 +20,12 @@ import { CocktailIngredient } from './cocktail-ingredient/entities/cocktail-ingr
       username: 'postgres',
       password: 'haslo',
       database: 'cocktailer_db',
-      entities: [Cocktail, Ingredient, CocktailIngredient],
+      entities: [Cocktail, Ingredient, CocktailIngredient, User],
       synchronize: true,
     }),
     CocktailModule, 
     IngredientModule, 
-    CocktailIngredientModule
+    CocktailIngredientModule, UserModule
   ],
   controllers: [AppController],
   providers: [AppService],
