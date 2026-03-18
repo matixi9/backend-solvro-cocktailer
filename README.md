@@ -71,6 +71,9 @@ Once the server is running, the documentation is available at:
 
 ---
 
+## 📊 Database Diagram (ERD)
+![Database Entity Relationship Diagram](cocktailer_erd.png)
+
 ## 📋 Task List and Progress
 
 The recruitment task was divided into core requirements and additional ("Nice to have") features. Below is the current implementation status:
@@ -96,7 +99,7 @@ The recruitment task was divided into core requirements and additional ("Nice to
 - [x] Permissions: editing/deleting a cocktail allowed only for the creator or an Admin.
 - [x] Ratings and reviews: everyone can view cocktails, but only logged-in users can leave a review.
 - [x] Automated tests (unit, integration, or e2e).
-- [ ] Generate and attach an ERD database schema (screenshot).
+- [x] Generate and attach an ERD database schema (screenshot).
 
 ---
 **Author:**  Mateusz Reszel  
