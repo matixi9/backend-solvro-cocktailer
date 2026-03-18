@@ -94,8 +94,8 @@ The recruitment task was divided into core requirements and additional ("Nice to
 - [x] Different user roles (Role breakdown: User and Admin).
 - [x] Link cocktail to its author (User -> Cocktail relationship).
 - [x] Permissions: editing/deleting a cocktail allowed only for the creator or an Admin.
-- [ ] Ratings and reviews: everyone can view cocktails, but only logged-in users can leave a review.
-- [ ] Automated tests (unit, integration, or e2e).
+- [x] Ratings and reviews: everyone can view cocktails, but only logged-in users can leave a review.
+- [x] Automated tests (unit, integration, or e2e).
 - [ ] Generate and attach an ERD database schema (screenshot).
 
 ---
