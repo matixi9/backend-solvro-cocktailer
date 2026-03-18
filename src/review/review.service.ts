@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Review } from './entities/review.entity';
+import { Repository } from 'typeorm';
+import { Cocktail } from 'src/cocktail/entities/cocktail.entity';
 
 @Injectable()
 export class ReviewService {
-  create(createReviewDto: CreateReviewDto) {
-    return 'This action adds a new review';
+
+  constructor(
+    @InjectRepository(Review)
+    private reviewRepository: Repository<Review>,
+    @InjectRepository(Cocktail)
+    private cocktailRepository: Repository<Cocktail>,
+  ) {}
+
+  async create(createReviewDto: CreateReviewDto, user: any) {
+    const cocktail = await this.cocktailRepository.findOne({
+      where: {id: createReviewDto.cocktailId},
+    });
+
+    if (!cocktail) {
+      throw new NotFoundException(`Cocktail with ${createReviewDto.cocktailId} does not exist`);
+    }
+
+    const newReview = this.reviewRepository.create({
+      rating: createReviewDto.rating,
+      content: createReviewDto.content,
+      author: {id: user.userId},
+      cocktail: {id: cocktail.id},
+    });
+
+    return await this.reviewRepository.save(newReview);
   }
 
-  findAll() {
-    return `This action returns all review`;
-  }
+  async findOne(id: number) {
+    const cocktail = await this.cocktailRepository.findOne({
+      where: {id},
+      relations: ['ingredients', 'ingredients.ingredient', 'author', 'reviews', 'reviews.author'],
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
-  }
+    if (!cocktail) {
+      throw new NotFoundException(`Not found cocktail with ${id} ID`);
+    }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+    return cocktail;
   }
 }
