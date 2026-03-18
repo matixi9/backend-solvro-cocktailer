@@ -11,6 +11,8 @@ import { CocktailIngredient } from './cocktail-ingredient/entities/cocktail-ingr
 import { UserModule } from './user/user.module';
 import { User } from './user/entities/user.entity';
 import { AuthModule } from './auth/auth.module';
+import { ReviewModule } from './review/review.module';
+import { Review } from './review/entities/review.entity';
 
 @Module({
   imports: [
@@ -21,12 +23,12 @@ import { AuthModule } from './auth/auth.module';
       username: 'postgres',
       password: 'haslo',
       database: 'cocktailer_db',
-      entities: [Cocktail, Ingredient, CocktailIngredient, User],
+      entities: [Cocktail, Ingredient, CocktailIngredient, User, Review],
       synchronize: true,
     }),
     CocktailModule, 
     IngredientModule, 
-    CocktailIngredientModule, UserModule, AuthModule
+    CocktailIngredientModule, UserModule, AuthModule, ReviewModule
   ],
   controllers: [AppController],
   providers: [AppService],

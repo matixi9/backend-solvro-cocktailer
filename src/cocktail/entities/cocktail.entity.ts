@@ -1,5 +1,6 @@
 import { CocktailIngredient } from "src/cocktail-ingredient/entities/cocktail-ingredient.entity";
 import { Ingredient } from "src/ingredient/entities/ingredient.entity";
+import { Review } from "src/review/entities/review.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -22,4 +23,7 @@ export class Cocktail {
 
     @ManyToOne(() => User, (user) => user.cocktails)
     author: User;
+
+    @OneToMany(() => Review, (review) => review.cocktail)
+    reviews: Review[];
 }
