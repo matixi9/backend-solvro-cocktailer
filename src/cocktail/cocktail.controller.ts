@@ -34,14 +34,21 @@ export class CocktailController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCocktailDto: UpdateCocktailDto) {
-    return this.cocktailService.update(+id, updateCocktailDto);
+  update(
+    @Param('id') id: string, 
+    @Body() updateCocktailDto: UpdateCocktailDto,
+    @Request() req
+  ) {
+    return this.cocktailService.update(+id, updateCocktailDto, req.user);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cocktailService.remove(+id);
+  remove(
+    @Param('id') id: string,
+    @Request() req
+  ) {
+    return this.cocktailService.remove(+id, req.user);
   }
 }

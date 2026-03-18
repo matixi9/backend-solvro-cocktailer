@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, Search } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException, Search } from '@nestjs/common';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -58,14 +58,38 @@ export class CocktailService {
     return cocktail
   }
 
-  async update(id: number, updateCocktailDto: UpdateCocktailDto): Promise<Cocktail> {
-    const cocktail = await this.findOne(id);
-    const updatedCocktail = this.cocktailRepository.merge(cocktail, updateCocktailDto);
-    return await this.cocktailRepository.save(updatedCocktail);
+  async update(id: number, updateCocktailDto: UpdateCocktailDto, user: any): Promise<Cocktail> {
+    const cocktail = await this.cocktailRepository.findOne({
+      where: {id},
+      relations: ['author'],
+    });
+    
+    if (!cocktail) {
+      throw new NotFoundException(`Not found cocktail with ${id} ID`);
+    }
+
+    if (cocktail.author?.id !== user.userId && user.role !== 'admin') {
+      throw new ForbiddenException('No permission. Only author or admin can do it')
+    }
+
+    Object.assign(cocktail, updateCocktailDto);
+    return await this.cocktailRepository.save(cocktail);
   }
 
-  async remove(id: number): Promise<void> {
-    const cocktail = await this.findOne(id);
-    await this.cocktailRepository.remove(cocktail);
+  async remove(id: number, user: any) {
+    const cocktail = await this.cocktailRepository.findOne({
+      where: {id},
+      relations: ['author'],
+    });
+    
+    if (!cocktail) {
+      throw new NotFoundException(`Not found cocktail with ${id} ID`);
+    }
+
+    if (cocktail.author?.id !== user.userId && user.role !== 'admin') {
+      throw new ForbiddenException('No permission. Only author or admin can do it')
+    }
+
+    return await this.cocktailRepository.remove(cocktail);
   }
 }
