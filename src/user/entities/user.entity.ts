@@ -1,4 +1,5 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Cocktail } from "src/cocktail/entities/cocktail.entity";
+import { Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Entity } from "typeorm";
 
 @Entity()
@@ -14,4 +15,7 @@ export class User {
 
     @Column({default: 'user'})
     role: string;
+
+    @OneToMany(() => Cocktail, (cocktail) => cocktail.author)
+    cocktails: Cocktail[];
 }

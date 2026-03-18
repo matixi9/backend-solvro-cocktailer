@@ -1,6 +1,7 @@
 import { CocktailIngredient } from "src/cocktail-ingredient/entities/cocktail-ingredient.entity";
 import { Ingredient } from "src/ingredient/entities/ingredient.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Cocktail {
@@ -18,4 +19,7 @@ export class Cocktail {
 
     @OneToMany(() => CocktailIngredient, (cocktailIngredient) => cocktailIngredient.cocktail, {cascade: true})
     ingredients: CocktailIngredient[];
+
+    @ManyToOne(() => User, (user) => user.cocktails)
+    author: User;
 }
