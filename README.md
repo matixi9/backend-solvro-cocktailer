@@ -89,8 +89,8 @@ The recruitment task was divided into core requirements and additional ("Nice to
 
 ### 🌟 Nice to have (Additional Features)
 - [x] Generate automated API documentation (Swagger / OpenAPI).
-- [ ] Support for complex filtering and sorting (e.g., searching for non-alcoholic cocktails, sorting by name).
-- [ ] Authorization and users (Login and Registration using JWT).
+- [x] Support for complex filtering and sorting (e.g., searching for non-alcoholic cocktails, sorting by name).
+- [x] Authorization and users (Login and Registration using JWT).
 - [ ] Different user roles (Role breakdown: User and Admin).
 - [ ] Link cocktail to its author (User -> Cocktail relationship).
 - [ ] Permissions: editing/deleting a cocktail allowed only for the creator or an Admin.
