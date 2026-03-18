@@ -13,8 +13,8 @@ export class CocktailService {
     private cocktailRepository: Repository<Cocktail>,
   ) {}
 
-  async create(createCocktailDto: CreateCocktailDto): Promise<Cocktail> {
-    const newCocktail = this.cocktailRepository.create(createCocktailDto);
+  async create(createCocktailDto: CreateCocktailDto, user: any) {
+    const newCocktail = this.cocktailRepository.create({...createCocktailDto, author: {id: user.userId}});
     return await this.cocktailRepository.save(newCocktail);
   }
 

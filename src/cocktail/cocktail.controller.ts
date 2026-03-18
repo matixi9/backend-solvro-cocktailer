@@ -1,15 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Request} from '@nestjs/common';
 import { CocktailService } from './cocktail.service';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 
 @Controller('cocktail')
 export class CocktailController {
   constructor(private readonly cocktailService: CocktailService) {}
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCocktailDto: CreateCocktailDto) {
-    return this.cocktailService.create(createCocktailDto);
+  create(@Body() createCocktailDto: CreateCocktailDto, @Request() req) {
+    return this.cocktailService.create(createCocktailDto, req.user);
   }
 
   @Get()
@@ -27,11 +31,15 @@ export class CocktailController {
     return this.cocktailService.findOne(+id);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCocktailDto: UpdateCocktailDto) {
     return this.cocktailService.update(+id, updateCocktailDto);
   }
 
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.cocktailService.remove(+id);

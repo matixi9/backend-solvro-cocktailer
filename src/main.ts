@@ -15,6 +15,7 @@ async function bootstrap() {
     .setTitle('Cocktailer API')
     .setDescription('API do zarządzania koktajlami i składnikami (Zadanie Rekrutacyjne)')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
     
   const documentFactory = () => SwaggerModule.createDocument(app, config);
