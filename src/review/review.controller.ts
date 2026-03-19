@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 

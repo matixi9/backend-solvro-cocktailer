@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { CocktailIngredient } from "src/cocktail-ingredient/entities/cocktail-ingredient.entity";
-import { Ingredient } from "src/ingredient/entities/ingredient.entity";
 
 export class CreateCocktailDto {
     @IsString()

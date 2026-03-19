@@ -1,5 +1,4 @@
 import { CocktailIngredient } from "src/cocktail-ingredient/entities/cocktail-ingredient.entity";
-import { Ingredient } from "src/ingredient/entities/ingredient.entity";
 import { Review } from "src/review/entities/review.entity";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
