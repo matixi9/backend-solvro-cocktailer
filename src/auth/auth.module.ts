@@ -11,7 +11,7 @@ import { JwtStrategy } from './jwt.strategy';
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: 'mega_hiper_tajny_klucz',
+      secret: 'mega-super-secret-key',
       signOptions: { expiresIn: '1h' },
     }),
   ],
