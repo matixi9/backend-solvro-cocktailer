@@ -1,19 +1,19 @@
-import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateIngredientDto {
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsString()
-    @IsNotEmpty()
-    description: string;
+  @IsString()
+  @IsNotEmpty()
+  description: string;
 
-    @IsBoolean()
-    @IsNotEmpty()
-    isAlcoholic: boolean;
+  @IsBoolean()
+  @IsNotEmpty()
+  isAlcoholic: boolean;
 
-    @IsString()
-    @IsNotEmpty()
-    photo: string;
+  @IsString()
+  @IsNotEmpty()
+  photo: string;
 }

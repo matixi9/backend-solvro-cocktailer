@@ -7,7 +7,6 @@ import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class IngredientService {
-
   constructor(
     @InjectRepository(Ingredient)
     private ingredientRepository: Repository<Ingredient>,
@@ -18,7 +17,12 @@ export class IngredientService {
     return await this.ingredientRepository.save(newIngredient);
   }
 
-  async findAll(page: number, limit: number, search?: string, isAlcoholic?: string): Promise<any> {
+  async findAll(
+    page: number,
+    limit: number,
+    search?: string,
+    isAlcoholic?: string,
+  ): Promise<any> {
     const skip = (page - 1) * limit;
 
     const where: any = {};
@@ -34,7 +38,7 @@ export class IngredientService {
       where: where,
       skip: skip,
       take: limit,
-      order: {name: 'ASC'}
+      order: { name: 'ASC' },
     });
 
     return {
@@ -42,21 +46,27 @@ export class IngredientService {
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit)
+      totalPages: Math.ceil(total / limit),
     };
   }
 
   async findOne(id: number): Promise<Ingredient> {
-    const cocktail = await this.ingredientRepository.findOneBy({id});
+    const cocktail = await this.ingredientRepository.findOneBy({ id });
     if (!cocktail) {
-      throw new NotFoundException ("Nie znaleziono danego składnika");
+      throw new NotFoundException('Nie znaleziono danego składnika');
     }
-    return cocktail
+    return cocktail;
   }
 
-  async update(id: number, updateIngredientDto: UpdateIngredientDto): Promise<Ingredient> {
+  async update(
+    id: number,
+    updateIngredientDto: UpdateIngredientDto,
+  ): Promise<Ingredient> {
     const ingredient = await this.findOne(id);
-    const updatedIngredient = this.ingredientRepository.merge(ingredient, updateIngredientDto);
+    const updatedIngredient = this.ingredientRepository.merge(
+      ingredient,
+      updateIngredientDto,
+    );
     return await this.ingredientRepository.save(updatedIngredient);
   }
 

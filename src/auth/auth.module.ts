@@ -12,7 +12,7 @@ import { JwtStrategy } from './jwt.strategy';
     PassportModule,
     JwtModule.register({
       secret: 'mega_hiper_tajny_klucz',
-      signOptions: {expiresIn: "1h"},
+      signOptions: { expiresIn: '1h' },
     }),
   ],
   controllers: [AuthController],

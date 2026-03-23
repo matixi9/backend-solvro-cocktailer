@@ -7,7 +7,6 @@ import { Cocktail } from 'src/cocktail/entities/cocktail.entity';
 
 @Injectable()
 export class ReviewService {
-
   constructor(
     @InjectRepository(Review)
     private reviewRepository: Repository<Review>,
@@ -17,18 +16,20 @@ export class ReviewService {
 
   async create(createReviewDto: CreateReviewDto, user: any) {
     const cocktail = await this.cocktailRepository.findOne({
-      where: {id: createReviewDto.cocktailId},
+      where: { id: createReviewDto.cocktailId },
     });
 
     if (!cocktail) {
-      throw new NotFoundException(`Cocktail with ${createReviewDto.cocktailId} does not exist`);
+      throw new NotFoundException(
+        `Cocktail with ${createReviewDto.cocktailId} does not exist`,
+      );
     }
 
     const newReview = this.reviewRepository.create({
       rating: createReviewDto.rating,
       content: createReviewDto.content,
-      author: {id: user.userId},
-      cocktail: {id: cocktail.id},
+      author: { id: user.userId },
+      cocktail: { id: cocktail.id },
     });
 
     return await this.reviewRepository.save(newReview);
@@ -36,8 +37,14 @@ export class ReviewService {
 
   async findOne(id: number) {
     const cocktail = await this.cocktailRepository.findOne({
-      where: {id},
-      relations: ['ingredients', 'ingredients.ingredient', 'author', 'reviews', 'reviews.author'],
+      where: { id },
+      relations: [
+        'ingredients',
+        'ingredients.ingredient',
+        'author',
+        'reviews',
+        'reviews.author',
+      ],
     });
 
     if (!cocktail) {

@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Request} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { CocktailService } from './cocktail.service';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
@@ -21,7 +32,7 @@ export class CocktailController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
     @Query('search') search?: string,
-    @Query('category') category?: string
+    @Query('category') category?: string,
   ) {
     return this.cocktailService.findAll(page, limit, search, category);
   }
@@ -35,9 +46,9 @@ export class CocktailController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
-    @Param('id') id: string, 
+    @Param('id') id: string,
     @Body() updateCocktailDto: UpdateCocktailDto,
-    @Request() req
+    @Request() req,
   ) {
     return this.cocktailService.update(+id, updateCocktailDto, req.user);
   }
@@ -45,10 +56,7 @@ export class CocktailController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(
-    @Param('id') id: string,
-    @Request() req
-  ) {
+  remove(@Param('id') id: string, @Request() req) {
     return this.cocktailService.remove(+id, req.user);
   }
 }

@@ -13,16 +13,18 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const {email, password} = createUserDto;
+    const { email, password } = createUserDto;
 
-    const existingUser = await this.userRepository.findOne({where: {email}});
+    const existingUser = await this.userRepository.findOne({
+      where: { email },
+    });
     if (existingUser) {
       throw new ConflictException('User with this email already exists :c');
     }
 
     const saltRounds = 10;
     const hasherPassword = await bcrypt.hash(password, saltRounds);
-  
+
     const newUser = this.userRepository.create({
       email,
       password: hasherPassword,
@@ -32,6 +34,6 @@ export class UserService {
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return await this.userRepository.findOne({where: {email}});
+    return await this.userRepository.findOne({ where: { email } });
   }
 }

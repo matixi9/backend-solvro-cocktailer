@@ -7,14 +7,17 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CocktailIngredientService {
+  constructor(
+    @InjectRepository(CocktailIngredient)
+    private cocktailIngredientRepository: Repository<CocktailIngredient>,
+  ) {}
 
-constructor(
-  @InjectRepository(CocktailIngredient)
-  private cocktailIngredientRepository: Repository<CocktailIngredient>,
-) {}
-
-  async create(createCocktailIngredientDto: CreateCocktailIngredientDto): Promise<CocktailIngredient> {
-    const newCocktailIngredient = this.cocktailIngredientRepository.create(createCocktailIngredientDto);
+  async create(
+    createCocktailIngredientDto: CreateCocktailIngredientDto,
+  ): Promise<CocktailIngredient> {
+    const newCocktailIngredient = this.cocktailIngredientRepository.create(
+      createCocktailIngredientDto,
+    );
     return await this.cocktailIngredientRepository.save(newCocktailIngredient);
   }
 
@@ -31,22 +34,31 @@ constructor(
       total,
       page,
       limit,
-      totalPages: Math.ceil(total / limit)
+      totalPages: Math.ceil(total / limit),
     };
   }
 
   async findOne(id: number): Promise<CocktailIngredient> {
-    const cocktailIngredient = await this.cocktailIngredientRepository.findOneBy({id});
+    const cocktailIngredient =
+      await this.cocktailIngredientRepository.findOneBy({ id });
     if (!cocktailIngredient) {
-      throw new NotFoundException ("Nie znaleziono danego składnika");
+      throw new NotFoundException('Nie znaleziono danego składnika');
     }
-    return cocktailIngredient
+    return cocktailIngredient;
   }
 
-  async update(id: number, UpdateCocktailIngredientDto: UpdateCocktailIngredientDto): Promise<CocktailIngredient> {
+  async update(
+    id: number,
+    UpdateCocktailIngredientDto: UpdateCocktailIngredientDto,
+  ): Promise<CocktailIngredient> {
     const cocktailIngredient = await this.findOne(id);
-    const updatedCocktailIngredient = this.cocktailIngredientRepository.merge(cocktailIngredient, UpdateCocktailIngredientDto);
-    return await this.cocktailIngredientRepository.save(updatedCocktailIngredient);
+    const updatedCocktailIngredient = this.cocktailIngredientRepository.merge(
+      cocktailIngredient,
+      UpdateCocktailIngredientDto,
+    );
+    return await this.cocktailIngredientRepository.save(
+      updatedCocktailIngredient,
+    );
   }
 
   async remove(id: number): Promise<void> {
