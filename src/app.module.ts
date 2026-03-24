@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { CocktailModule } from './cocktail/cocktail.module';
 import { IngredientModule } from './ingredient/ingredient.module';
 import { CocktailIngredientModule } from './cocktail-ingredient/cocktail-ingredient.module';
@@ -33,7 +31,7 @@ import { Review } from './review/entities/review.entity';
     AuthModule,
     ReviewModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
