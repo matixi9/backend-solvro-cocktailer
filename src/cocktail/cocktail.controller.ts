@@ -13,7 +13,7 @@ import {
 import { CocktailService } from './cocktail.service';
 import { CreateCocktailDto } from './dto/create-cocktail.dto';
 import { UpdateCocktailDto } from './dto/update-cocktail.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
 
 @Controller('cocktail')
@@ -28,6 +28,30 @@ export class CocktailController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'page',
+    required: true,
+    type: 'number',
+    description: 'Page number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: true,
+    type: 'number',
+    description: 'Searches per page',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: 'string',
+    description: 'Filter by name',
+  })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    type: 'string',
+    description: 'Filter by category',
+  })
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,

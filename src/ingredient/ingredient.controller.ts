@@ -11,6 +11,7 @@ import {
 import { IngredientService } from './ingredient.service';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('ingredient')
 export class IngredientController {
@@ -22,6 +23,30 @@ export class IngredientController {
   }
 
   @Get()
+  @ApiQuery({
+    name: 'page',
+    required: true,
+    type: 'number',
+    description: 'Page number',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: true,
+    type: 'number',
+    description: 'Searches per page',
+  })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    type: 'string',
+    description: 'Filter by name',
+  })
+  @ApiQuery({
+    name: 'isAlcoholic',
+    required: false,
+    type: Boolean,
+    description: 'Is ingredient alcoholic',
+  })
   findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
