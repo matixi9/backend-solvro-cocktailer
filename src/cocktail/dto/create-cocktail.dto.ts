@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { CocktailIngredient } from 'src/cocktail-ingredient/entities/cocktail-ingredient.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateCocktailIngredientDto } from '../../cocktail-ingredient/dto/create-cocktail-ingredient.dto';
 
@@ -38,5 +37,5 @@ export class CreateCocktailDto {
     description: 'List of ingredients with their amounts',
   })
   @IsNotEmpty()
-  ingredients: CocktailIngredient[];
+  ingredients: CreateCocktailIngredientDto[];
 }

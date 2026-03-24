@@ -17,11 +17,20 @@ export class CocktailService {
   ) {}
 
   async create(createCocktailDto: CreateCocktailDto, user: any) {
+    const mappedIngredients = createCocktailDto.ingredients.map((item) => ({
+      amount: item.amount,
+      ingredient: { id: item.ingredientId },
+    }));
+
     const newCocktail = this.cocktailRepository.create({
       ...createCocktailDto,
+      ingredients: mappedIngredients,
       author: { id: user.userId },
     });
-    return await this.cocktailRepository.save(newCocktail);
+
+    const savedCocktail = await this.cocktailRepository.save(newCocktail);
+
+    return this.findOne(savedCocktail.id);
   }
 
   async findAll(
